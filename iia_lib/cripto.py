@@ -240,6 +240,28 @@ def bytes_a_certificado(cert_bytes: bytes) -> x509.Certificate:
     """
     return x509.load_pem_x509_certificate(cert_bytes)
 
+
+def obtener_common_name(cert: x509.Certificate) -> str:
+    """
+    Extrae el Common Name (CN) del sujeto de un certificado X.509.
+
+    El Common Name es el campo que identifica a quién pertenece el certificado
+    (por ejemplo, el nombre de un dispositivo o de una persona).
+
+    Args:
+        cert (x509.Certificate): Certificado del que se quiere extraer el CN.
+
+    Returns:
+        str: El Common Name del sujeto del certificado.
+
+    Raises:
+        ValueError: Si el certificado no contiene un atributo Common Name.
+    """
+    atributos_cn = cert.subject.get_attributes_for_oid(NameOID.COMMON_NAME)
+    if not atributos_cn:
+        raise ValueError("El certificado no contiene un Common Name (CN).")
+    return str(atributos_cn[0].value)
+
 # def _calcula_hash(datos: bytes) -> bytes:
 #     """
 #     Calculates the SHA-256 cryptographic hash of the given data.

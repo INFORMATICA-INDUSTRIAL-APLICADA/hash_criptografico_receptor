@@ -1,0 +1,7 @@
+# Solución de referencia del profesor: NO debe llegar a los repositorios de los alumnos.
+receptor_comandos/verifica_orden_profesor.py
+
+# Artefactos generados al ejecutar el banco de pruebas / el código Python.
+ids_procesados.txt
+__pycache__/
+*.pyc

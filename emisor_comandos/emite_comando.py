@@ -37,7 +37,7 @@ def comando_enriquecido(comando: dict[str, Any]) -> dict[str, Any]:
     return comando
 
 
-def generar_json_firmado(tipo_fallo: str | None = None) -> str:
+def generar_json_firmado(tipo_fallo: str | None = None) -> bytes:
     """
     Genera un comando aleatorio y lo firma.
     Puede introducir fallos a propósito para realizar pruebas.
@@ -109,7 +109,7 @@ def generar_json_firmado(tipo_fallo: str | None = None) -> str:
         json_final["firma_b64"] = "estoNOesUNAfirmaVALIDAenBASE64=="
         print("[Simulador] Firma REEMPLAZADA por basura.")
 
-    return json.dumps(json_final, indent=4)
+    return json.dumps(json_final, indent=4).encode('utf-8')
 
 
 def evaluar_respuesta_alumno(json_original_str: str, id_recibido_del_alumno: str) -> str:
@@ -136,4 +136,4 @@ def evaluar_respuesta_alumno(json_original_str: str, id_recibido_del_alumno: str
 if __name__ == "__main__":
     print("--- Generando un mensaje JSON firmado (plantilla realista) ---")
     mensaje_para_alumno = generar_json_firmado()
-    print(mensaje_para_alumno)
+    print(mensaje_para_alumno.decode('utf-8'))
