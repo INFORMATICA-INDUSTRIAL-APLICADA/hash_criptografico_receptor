@@ -81,9 +81,10 @@ def crear_certificado(
     clave_privada_emisor: rsa.RSAPrivateKey,
     nombre_comun_emisor: str,
     es_ca: bool,
-    dias_validez: int,
+    dias_validez: int = 365,
     emisor_country: str = "ES",
-    emisor_organization: str = "Informática Industrial Aplicada"
+    emisor_organization: str = "Informática Industrial Aplicada",
+    fecha_fin: datetime | None = None
 ) -> x509.Certificate:
     """
     Crea y firma un certificado X.509 usando las claves y datos proporcionados.
@@ -93,9 +94,10 @@ def crear_certificado(
         clave_privada_emisor (rsa.RSAPrivateKey): Clave privada del emisor (usada para firmar el certificado).
         nombre_comun_emisor (str): Nombre común (CN) del emisor del certificado.
         es_ca (bool): Indica si el certificado es para una Autoridad Certificadora (CA).
-        dias_validez (int): Número de días de validez del certificado.
+        dias_validez (int): Número de días de validez del certificado (si no se especifica fecha_fin).
         emisor_country (str, optional): País del emisor. Por defecto "ES".
         emisor_organization (str, optional): Organización del emisor. Por defecto "Informática Industrial Aplicada".
+        fecha_fin (datetime | None, optional): Fecha y hora exacta de expiración (UTC). Tiene prioridad sobre dias_validez.
     Returns:
         x509.Certificate: Certificado X.509 firmado.
     Notas:
@@ -121,6 +123,7 @@ def crear_certificado(
         ])
 
     now = datetime.now(timezone.utc)
+    fecha_expiracion = fecha_fin if fecha_fin is not None else (now + timedelta(days=dias_validez))
     builder = (
         x509.CertificateBuilder()
         .subject_name(subject)
@@ -128,7 +131,7 @@ def crear_certificado(
         .public_key(clave_publica_sujeto)
         .serial_number(x509.random_serial_number())
         .not_valid_before(now)
-        .not_valid_after(now + timedelta(days=dias_validez))
+        .not_valid_after(fecha_expiracion)
     )
 
     # Extensiones básicas

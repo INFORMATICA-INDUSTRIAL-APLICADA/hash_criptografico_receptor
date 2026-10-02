@@ -1,6 +1,10 @@
 # Solución de referencia del profesor: NO debe llegar a los repositorios de los alumnos.
 receptor_comandos/verifica_orden_profesor.py
 
+# Herramientas de certificación y clave privada de la CA (exclusivas del profesor)
+autoridad_certificacion/
+certificados/ca/ca_private_key.pem
+
 # Artefactos generados al ejecutar el banco de pruebas / el código Python.
 ids_procesados.txt
 __pycache__/
